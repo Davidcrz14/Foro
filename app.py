@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_from_directory
 from flask_socketio import SocketIO, emit
-from database import agregar_mensaje, obtener_mensajes, registrar_usuario, verificar_usuario, obtener_usuarios_conectados, inicializar_db, obtener_usuario_por_id, actualizar_perfil, agregar_columna_descripcion, agregar_columna_spotify_url
+from database import agregar_mensaje, obtener_mensajes, registrar_usuario, verificar_usuario, obtener_usuarios_conectados, inicializar_db, obtener_usuario_por_id, actualizar_perfil, agregar_columna_descripcion
 import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -157,7 +157,6 @@ def editar_perfil():
         descripcion = request.form.get('descripcion', usuario['descripcion'])
         sexo = request.form.get('sexo', usuario['sexo'])
         edad = request.form.get('edad', usuario['edad'])
-        spotify_url = request.form.get('spotify_url', usuario['spotify_url'])
         foto_perfil_url = request.form.get('foto_perfil_url')
 
         if foto_perfil_url:
@@ -174,7 +173,7 @@ def editar_perfil():
         else:
             foto_perfil = usuario['foto_perfil']
 
-        actualizar_perfil(session['usuario_id'], descripcion, sexo, edad, foto_perfil, spotify_url)
+        actualizar_perfil(session['usuario_id'], descripcion, sexo, edad, foto_perfil)
         return redirect(url_for('ver_perfil', usuario_id=session['usuario_id']))
 
     return render_template('editar_perfil.html', usuario=usuario)
@@ -192,5 +191,4 @@ if not os.path.exists(UPLOAD_FOLDER):
 if __name__ == '__main__':
     inicializar_db()
     agregar_columna_descripcion()
-    agregar_columna_spotify_url()
     socketio.run(app, debug=True)
