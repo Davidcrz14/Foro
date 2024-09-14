@@ -154,26 +154,14 @@ def editar_perfil():
         return "Usuario no encontrado", 404
 
     if request.method == 'POST':
-        descripcion = request.form.get('descripcion', usuario['descripcion'])
-        sexo = request.form.get('sexo', usuario['sexo'])
-        edad = request.form.get('edad', usuario['edad'])
-        foto_perfil_url = request.form.get('foto_perfil_url')
+        descripcion = request.form['descripcion']
+        sexo = request.form['sexo']
+        edad = request.form['edad']
+        foto_perfil = request.files['foto_perfil']
+        spotify_url = request.form['spotify_url']  # Añade esta línea
 
-        if foto_perfil_url:
-            foto_perfil = foto_perfil_url
-        elif 'foto_perfil' in request.files:
-            file = request.files['foto_perfil']
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
-                foto_perfil = url_for('uploaded_file', filename=filename, _external=True)
-            else:
-                foto_perfil = usuario['foto_perfil']
-        else:
-            foto_perfil = usuario['foto_perfil']
+        actualizar_perfil(session['usuario_id'], descripcion, sexo, edad, foto_perfil, spotify_url)  # Añade spotify_url aquí
 
-        actualizar_perfil(session['usuario_id'], descripcion, sexo, edad, foto_perfil)
         return redirect(url_for('ver_perfil', usuario_id=session['usuario_id']))
 
     return render_template('editar_perfil.html', usuario=usuario)
