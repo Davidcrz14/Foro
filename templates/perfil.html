@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de {{ usuario.nombre }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            100: '#3F3D56',
+                            200: '#6C63FF',
+                            300: '#F0E4D7',
+                            400: '#FFD6BA',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .animate-fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+            .animate-slide-in {
+                animation: slideIn 0.5s ease-out;
+            }
+            @keyframes fadeIn {
+                0% { opacity: 0; }
+                100% { opacity: 1; }
+            }
+            @keyframes slideIn {
+                0% { transform: translateY(20px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+        }
+    </style>
+</head>
+<body class="bg-pastel-100 text-pastel-300">
+    <div class="container mx-auto px-4 py-8">
+        <header class="flex justify-between items-center mb-8 animate-fade-in">
+            <h1 class="text-4xl font-bold text-pastel-200">Perfil de {{ usuario.nombre }}</h1>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <main class="md:col-span-2 animate-slide-in">
+                <div class="bg-pastel-200 p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <img src="{{ usuario.foto_perfil or url_for('static', filename='default_profile.png') }}" alt="Foto de perfil de {{ usuario.nombre }}" class="w-32 h-32 rounded-full object-cover border-4 border-pastel-400">
+                        <div>
+                            <h2 class="text-2xl font-bold text-pastel-400">{{ usuario.nombre }}</h2>
+                            <p class="text-pastel-300">{{ usuario.correo }}</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="mb-2"><strong>Descripción:</strong> {{ usuario.descripcion or 'Sin descripción' }}</p>
+                        <p class="mb-2"><strong>Sexo:</strong> {{ usuario.sexo or 'No especificado' }}</p>
+                        <p class="mb-2"><strong>Edad:</strong> {{ usuario.edad or 'No especificada' }}</p>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="animate-slide-in" style="animation-delay: 0.2s;">
+                <div class="bg-pastel-200 p-6 rounded-lg shadow-lg">
+                    <h3 class="text-2xl font-bold text-pastel-400 mb-4">Canción Favorita</h3>
+                    {% if usuario.spotify_url %}
+                        <iframe src="https://open.spotify.com/embed/track/{{ usuario.spotify_url.split('/')[-1] }}"
+                                width="100%"
+                                height="80"
+                                frameborder="0"
+                                allowtransparency="true"
+                                allow="encrypted-media">
+                        </iframe>
+                    {% else %}
+                        <p class="text-pastel-300">No se ha especificado una canción favorita.</p>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+
+        <footer class="mt-8 text-center animate-fade-in">
+            <a href="{{ url_for('index') }}" class="inline-block bg-pastel-400 text-pastel-100 py-2 px-4 rounded hover:bg-opacity-80 transition duration-300">
+                <i class="fas fa-arrow-left mr-2"></i>Volver al foro
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

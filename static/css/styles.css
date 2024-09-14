@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#mensajes {
+    margin-bottom: 20px;
+}
+
+.mensaje {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.mensaje .nombre {
+    font-weight: bold;
+}
+
+.mensaje .fecha {
+    font-size: 0.8em;
+    color: #888;
+}
+
+#formulario-mensaje {
+    display: flex;
+    flex-direction: column;
+}
+
+#mensaje {
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
